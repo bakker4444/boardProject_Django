@@ -11,7 +11,6 @@ def index(request):
     return render(request, "index.html", context)
 
 def board_topics(request, pk):
-    print("Hello")
     board = get_object_or_404(Board, pk=pk)
     context = {
         "board": board
