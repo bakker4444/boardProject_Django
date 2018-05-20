@@ -1,9 +1,11 @@
+from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import NewTopicForm, PostForm
 from .models import Board, Topic, Post
+
 
 
 def index(request):
@@ -16,8 +18,10 @@ def index(request):
 
 def board_topics(request, pk):
     board = get_object_or_404(Board, pk=pk)
+    topics = board.topics.order_by("-updated_at").annotate(replies=Count("posts") - 1)
     context = {
-        "board": board
+        "board": board,
+        "topics": topics
     }
     return render(request, "topics.html", context)
 
@@ -49,6 +53,8 @@ def new_topic(request, pk):
 
 def topic_posts(request, pk, topic_pk):
     topic = get_object_or_404(Topic, board__pk=pk, pk=topic_pk)
+    topic.views += 1
+    topic.save()
     context = {
         "topic": topic
     }
