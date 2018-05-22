@@ -1,3 +1,4 @@
+from django.views.generic import ListView
 from django.views.generic import UpdateView
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -11,12 +12,10 @@ from .models import Board, Topic, Post
 
 
 
-def index(request):
-    boards = Board.objects.all()
-    context = {
-        "boards": boards
-    }
-    return render(request, "index.html", context)
+class BoardListView(ListView):
+    model = Board
+    context_object_name = "boards"
+    template_name = "index.html"
 
 
 def board_topics(request, pk):
