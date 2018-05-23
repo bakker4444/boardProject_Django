@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # internal package
+    "django.contrib.humanize",
+
     ## pip packages
     "widget_tweaks",
 
